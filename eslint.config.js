@@ -2,7 +2,8 @@ import js from '@eslint/js';
 import globals from 'globals';
 
 const forbiddenHtmlMessage =
-  'Запрещено условием задания: создавайте элементы через document.createElement.';
+  'Forbidden by the task requirements: create elements with document.createElement.';
+const forbiddenDialogMessage = 'Forbidden by the task requirements: use a modal window instead.';
 
 export default [
   { ignores: ['dist/', 'node_modules/'] },
@@ -17,7 +18,6 @@ export default [
       globals: globals.browser,
     },
     rules: {
-      // --- Запреты из условия задания (штраф −100) ---
       'no-restricted-properties': [
         'error',
         { property: 'innerHTML', message: forbiddenHtmlMessage },
@@ -26,19 +26,17 @@ export default [
         { property: 'createContextualFragment', message: forbiddenHtmlMessage },
         { object: 'document', property: 'write', message: forbiddenHtmlMessage },
         { object: 'document', property: 'writeln', message: forbiddenHtmlMessage },
-        { object: 'window', property: 'alert', message: 'alert запрещён — используйте модальное окно.' },
-        { object: 'window', property: 'confirm', message: 'confirm запрещён — используйте модальное окно.' },
-        { object: 'window', property: 'prompt', message: 'prompt запрещён — используйте модальное окно.' },
+        { object: 'window', property: 'alert', message: forbiddenDialogMessage },
+        { object: 'window', property: 'confirm', message: forbiddenDialogMessage },
+        { object: 'window', property: 'prompt', message: forbiddenDialogMessage },
       ],
       'no-restricted-globals': [
         'error',
-        { name: 'alert', message: 'alert запрещён — используйте модальное окно.' },
-        { name: 'confirm', message: 'confirm запрещён — используйте модальное окно.' },
-        { name: 'prompt', message: 'prompt запрещён — используйте модальное окно.' },
+        { name: 'alert', message: forbiddenDialogMessage },
+        { name: 'confirm', message: forbiddenDialogMessage },
+        { name: 'prompt', message: forbiddenDialogMessage },
         { name: 'DOMParser', message: forbiddenHtmlMessage },
       ],
-
-      // --- Общие правила качества кода ---
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-var': 'error',
       'prefer-const': 'error',
